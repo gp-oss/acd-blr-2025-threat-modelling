@@ -23,3 +23,26 @@ Engineers building on/for the cloud
 Tech leads responsible for secure delivery
 Product owners concerned with compliance and security risks
 Anyone interested in building security into their AWS applications from design
+
+**Architectural Diagram:**
+
+* [View Detailed Architecture on Lucidchart](https://lucid.app/lucidchart/02ebcb92-79ff-4daa-873a-4a8e548ef68a/view)
+
+---
+
+## Interactive Data Flow Diagram (DFD)
+
+A detailed Data Flow Diagram illustrating how data moves into, through, and out of the Notification Core is available for review. This is essential for understanding potential threat vectors.
+
+* [View Interactive Data Flow Diagram on Lucidchart](https://lucid.app/lucidchart/02ebcb92-79ff-4daa-873a-4a8e548ef68a/view)
+
+---
+
+## Threat Modeling Tool: Threat Composer
+
+This threat model will be developed and documented using Threat Composer.
+
+* **Application Link:** [AWS Threat Composer](https://awslabs.github.io/threat-composer/workspaces/default/application)
+* **Documentation:** [Working with Threat Composer from the AWS Toolkit for VS Code](https://docs.aws.amazon.com/toolkit-for-vscode/latest/userguide/threatcomposer-overview.html)
+
+---

@@ -206,6 +206,14 @@
     {
       "mitigationId": "26644669-e2ba-4f1e-8e00-5fbfc4160908",
       "linkedId": "d00f74d1-89ce-4ec2-b8f4-6d097912cf39"
+    },
+    {
+      "linkedId": "4e882b9f-2a26-45b8-b431-c1f0f9563160",
+      "mitigationId": "7c59fdb0-07ef-4142-b5c3-d47e5f2d1fd9"
+    },
+    {
+      "linkedId": "b6006175-8620-440b-9062-9477c09cfaee",
+      "mitigationId": "d4b4fb81-7cfd-43ff-9b3d-3d2c863bd564"
     }
   ],
   "threats": [

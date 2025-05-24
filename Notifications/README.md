@@ -1,55 +1,91 @@
-Notification System Overview
+# Notification System Overview
 
-The notification service consists of three key boundary contexts working together to deliver secure, scalable communications:
-Component	Purpose	Responsibilities
-Notification Core	->      Orchestration Engine	->    Event validation, routing, workflow management, PII handling
-Notification Vendor	->    Delivery Management -> 	    Channel delivery (email, SMS, push), vendor integration, delivery tracking
-Notification Template-> 	Content Manement ->	        Template storage, personalization, content validation, localization
+This document outlines the architecture and components of the Notification System, with a specific focus on the **Notification Core** boundary context (BC) for threat modeling purposes.
 
-How They Work Together
-Consumer Services → [Notification Core] → [Notification Vendor] → External Channels
-                           ↓
-                    [Notification Template]
+The notification service is a critical component responsible for secure and scalable communications. It comprises three key boundary contexts:
 
-Consumer services send notification requests to Notification Core
-Notification Core validates requests and fetches content from Notification Template
-Notification Core orchestrates delivery through Notification Vendor
-Notification Vendor handles actual delivery via external channels (SendGrid, etc.)
-Vendor listens and report back delivery status and engagement metrics
+| Component             | Primary Function      | Key Responsibilities                                                                 |
+| :-------------------- | :-------------------- | :----------------------------------------------------------------------------------- |
+| **Notification Core** | Orchestration Engine  | Event validation, PII handling, routing logic, workflow management, integration hub.   |
+| **Notification Vendor** | Delivery Management   | Manages communication channel delivery (e.g., email, SMS, push notifications), integrates with third-party vendors, tracks delivery status and engagement. |
+| **Notification Template** | Content Management    | Stores and manages notification templates, handles personalization, content validation, and localization. |
 
+---
 
-🎯 Focus: Notification Core BC Threat Model
+## How The System Components Interact
 
-This presentation focuses specifically on the Notification Core component - the critical orchestration engine that:
-  1. Receives and validates notification requests from internal services
-  2. Handles sensitive PII data (emails, phone numbers, contact info)
-  3. Manages workflow orchestration and business rules
-  4. Integrates with Template and Vendor components
-  5. Processes 100K-1M notification events
+The typical flow of a notification request is as follows:
 
-Why Focus on Notification Core?
-  1. Highest Risk Component: Handles the most sensitive data and integrations
-  2. Central Attack Surface: Single point where most threats converge
-  3. Critical Business Function: System failure impacts all notification channels
-  4. Complex Data Flows: Multiple integration points requiring security analysis
+1.  **Consumer Services** initiate a notification request to the `Notification Core`.
+2.  `Notification Core`:
+    * Validates the incoming request.
+    * Fetches the appropriate content by interacting with the `Notification Template` service.
+    * Orchestrates the delivery process.
+3.  `Notification Core` then routes the prepared notification to the `Notification Vendor` service.
+4.  `Notification Vendor` handles the final delivery to the end-user via external channels (e.g., SendGrid, Twilio, Firebase Cloud Messaging).
+5.  `Notification Vendor` also listens for and reports back delivery status updates and engagement metrics to `Notification Core` or a centralized monitoring system.
 
+---
 
+## 🎯 Focus: Notification Core BC Threat Model
 
-🏗️ Notification Core Architecture:-
-https://lucid.app/lucidchart/02ebcb92-79ff-4daa-873a-4a8e548ef68a/edit?viewport_loc=-2621%2C-807%2C6445%2C3348%2Ci61dwZ2YSURg&invitationId=inv_4477b287-a845-49e5-8045-e7f7f78dbede
+This document and the associated threat modeling exercise concentrate on the **Notification Core** component. This central orchestration engine is responsible for:
 
-AWS Serverless Components
-    API Gateway + Lambda: Secure entry points with authentication
-    EventBridge: Event routing between Core, Vendor, and Template services
-    Step Functions: Workflow orchestration and business logic
-    DynamoDB: Notification metadata and delivery status storage
-    Cloudwatch: 
+1.  Receiving and validating all notification requests from internal consumer services.
+2.  Securely handling sensitive Personally Identifiable Information (PII) such as email addresses, phone numbers, and other contact details.
+3.  Managing complex workflow orchestrations and applying business-specific rules.
+4.  Integrating seamlessly with the `Notification Template` and `Notification Vendor` components.
+5.  Processing a significant volume of notification events (currently estimated at 100,000 to 1,000,000 events per [Specify time period, e.g., day/hour]).
 
-External Integrations
-    Consumer Services: Internal services requesting notifications
-    Notification Vendor BC: Delivery channel management
-    Notification Template BC: Content and template management
-    Document Management Platform: Attachment handling
+### Why Focus on Notification Core?
 
-🔗 Interactive Data Flow Diagram
-https://lucid.app/lucidchart/02ebcb92-79ff-4daa-873a-4a8e548ef68a/edit?invitationId=inv_4477b287-a845-49e5-8045-e7f7f78dbede&page=xmwfD8b1wP~R#
+The Notification Core is prioritized for threat modeling due to its:
+
+* **High-Risk Profile:** It directly processes and has access to the most sensitive data (PII) and acts as a central hub for integrations.
+* **Central Attack Surface:** As the primary entry and processing point for notifications, it represents a convergence point for numerous potential threats.
+* **Critical Business Function:** Any failure, compromise, or significant degradation of the Notification Core would impact all notification channels and potentially disrupt critical business communications.
+* **Complex Data Flows:** Its multiple integration points with other internal and external services necessitate a thorough security analysis of data in transit and at rest.
+
+---
+
+## 🏗️ Notification Core Architecture
+
+The Notification Core is built using a serverless architecture on AWS, leveraging the following key components and integrations:
+
+**AWS Serverless Components:**
+
+* **API Gateway + AWS Lambda:** Provides secure, scalable entry points for notification requests, handling authentication and authorization before invoking backend Lambda functions for processing.
+* **Amazon EventBridge:** Facilitates event-driven communication and routing between the `Notification Core`, `Notification Vendor`, and `Notification Template` services, enabling decoupled architecture.
+* **AWS Step Functions:** Manages complex workflow orchestration, business logic execution, retries, and error handling within the notification processing pipeline.
+* **Amazon DynamoDB:** Used for persistent storage of notification metadata, delivery status, audit logs, and potentially temporary PII storage during processing.
+* **Amazon CloudWatch:** Provides comprehensive logging, monitoring, metrics, and alerting for all components of the Notification Core, crucial for operational visibility and security incident detection.
+
+**External Integrations:**
+
+* **Consumer Services (Internal):** Various internal applications and services that trigger notification events.
+* **Notification Vendor BC:** The separate boundary context responsible for actual delivery via specific channels.
+* **Notification Template BC:** The separate boundary context that supplies the content and templates for notifications.
+* **Document Management Platform:** Integrated for handling and securing any attachments that may be part of a notification.
+
+**Architectural Diagram:**
+
+* [View Detailed Architecture on Lucidchart](https://lucid.app/lucidchart/02ebcb92-79ff-4daa-873a-4a8e548ef68a/view)
+
+---
+
+## 🔗 Interactive Data Flow Diagram (DFD)
+
+A detailed Data Flow Diagram illustrating how data moves into, through, and out of the Notification Core is available for review. This is essential for understanding potential threat vectors.
+
+* [View Interactive Data Flow Diagram on Lucidchart](https://lucid.app/lucidchart/02ebcb92-79ff-4daa-873a-4a8e548ef68a/view)
+
+---
+
+## 🛠️ Threat Modeling Tool: Threat Composer
+
+This threat model will be developed and documented using Threat Composer.
+
+* **Application Link:** [AWS Threat Composer](https://awslabs.github.io/threat-composer/workspaces/default/application)
+* **Documentation:** [Working with Threat Composer from the AWS Toolkit for VS Code](https://docs.aws.amazon.com/toolkit-for-vscode/latest/userguide/threatcomposer-overview.html)
+
+---

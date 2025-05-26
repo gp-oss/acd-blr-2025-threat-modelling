@@ -24,7 +24,11 @@ Tech leads responsible for secure delivery
 Product owners concerned with compliance and security risks
 Anyone interested in building security into their AWS applications from design
 
-**Architectural Diagram:**
+## Slides used in the workshop
+
+* [Slides](https://github.com/gp-oss/acd-blr-2025-threat-modelling/blob/main/Understanding%20threat%20landscape%20using%20Threat%20Composer.pdf)
+
+## Architectural Diagram:
 
 * [View Detailed Architecture on Lucidchart](https://lucid.app/lucidchart/02ebcb92-79ff-4daa-873a-4a8e548ef68a/view)
 

@@ -1,6 +1,8 @@
 # Overview
 This repo contains the collateral to facilitate the *Understanding threat landscape using Threat Composer* workshop at AWS Community Day Bengaluru happening on 24 May 2025, Saturday.
 
+**Disclaimer: The content of this repository is the property of G-P and cannot be shared without the express written permission of G-P.**
+
 ## Description
 This hands-on workshop introduces threat modeling as a proactive security practice essential for AWS workloads. Participants will learn to model data flows and to systematically identify, assess, and mitigate security risks before deployment using the STRIDE methodology and Threat Composer. Through practical exercises, attendees will develop skills to protect cloud architectures, reduce security costs, and foster collaboration between development and security teams. The workshop balances theoretical concepts with practical application on real AWS architectures.
 
